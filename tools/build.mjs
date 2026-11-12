@@ -511,7 +511,7 @@ function head({ title, description, url, image, depth, leaflet }) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url}">
-${image ? `<meta property="og:image" content="${SITE}${image}">\n<meta name="twitter:card" content="summary_large_image">\n` : ''}<meta name="theme-color" content="#1a1611">
+${image ? `<meta property="og:image" content="${SITE}${image}">\n<meta name="twitter:card" content="summary_large_image">\n` : ''}<meta name="theme-color" content="#101114">
 <link rel="icon" type="image/png" href="${up}img/icons/journal.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

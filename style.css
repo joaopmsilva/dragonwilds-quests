@@ -1,19 +1,19 @@
-/* Dragonwilds Quest Guides: parchment and ink, with a bronze accent. Shares its fonts and
-   the dark "fan tools" strip with the penguin map and the server mod page. */
+/* Dragonwilds Quest Guides. Shares its colours, fonts, header and the bar between the sites
+   with the penguin map; its own accent is bronze (the penguin map's is orange). */
 :root {
-  --bg: #f5efe3;
-  --panel: #fffdf8;
-  --sunk: #efe6d5;
-  --ink: #1f1a14;
-  --muted: #6d6355;
-  --line: #e2d6c0;
+  --bg: #f3f2ef;
+  --panel: #ffffff;
+  --sunk: #ebe9e4;
+  --ink: #17181b;
+  --muted: #5f636b;
+  --line: #dcdad4;
   --accent: #9a5d12;
   --accent-ink: #fff;
   --accent-soft: #f6e4c4;
   --new: #d23c2a;
   --upd: #1f6fd1;
   --done: #2e8b57;
-  --shadow: 0 1px 2px rgba(60, 40, 10, .06), 0 6px 18px rgba(60, 40, 10, .07);
+  --shadow: 0 1px 2px rgba(20, 20, 25, .06), 0 6px 18px rgba(20, 20, 25, .07);
   --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
@@ -22,14 +22,14 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #14110d; --panel: #1d1914; --sunk: #191510; --ink: #f1e9da; --muted: #a99c87; --line: #342c22;
+    --bg: #121316; --panel: #1a1c20; --sunk: #16171a; --ink: #eceef1; --muted: #9b9fa8; --line: #2c2f35;
     --accent: #e9a948; --accent-ink: #1a1208; --accent-soft: #3a2b16; --new: #ff5a45; --upd: #5aa2ff; --done: #4cc38a;
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #14110d; --panel: #1d1914; --sunk: #191510; --ink: #f1e9da; --muted: #a99c87; --line: #342c22;
+  --bg: #121316; --panel: #1a1c20; --sunk: #16171a; --ink: #eceef1; --muted: #9b9fa8; --line: #2c2f35;
   --accent: #e9a948; --accent-ink: #1a1208; --accent-soft: #3a2b16; --new: #ff5a45; --upd: #5aa2ff; --done: #4cc38a;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
   color-scheme: dark;
@@ -80,13 +80,14 @@ button { font: inherit; color: inherit; }
 
 /* ---- top bar ---- */
 .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); margin-right: auto; }
+.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; text-decoration: none; color: var(--ink); min-width: 0; }
 .brand .mark { width: 38px; height: 38px; flex: none; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .25)); }
-.brand b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 24px; line-height: 1; letter-spacing: .01em; }
-.brand small { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-top: 3px; }
-.coffee { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: #ffdd00; color: #1a1a1a; font-weight: 600; font-size: 14px; text-decoration: none; white-space: nowrap; }
-.coffee:hover { filter: brightness(.95); }
-@media (max-width: 480px) { .coffee span + span { display: none; } .coffee { padding: 7px 10px; } .brand b { font-size: 21px; } }
+.brand b, .brand h1 { display: block; margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 24px; line-height: 1; letter-spacing: .01em; }
+.brand small { display: block; margin-top: 3px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.coffee { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 14px; font-weight: 700; text-decoration: none; background: #ffdd00; color: #17181b; border-radius: 999px; padding: 7px 16px; box-shadow: 0 2px 0 #c9a800, 0 3px 10px rgba(255, 221, 0, .3); transition: transform .15s, box-shadow .15s; white-space: nowrap; }
+.coffee:hover { transform: translateY(-1px); box-shadow: 0 3px 0 #c9a800, 0 6px 16px rgba(255, 221, 0, .45); }
+.coffee:active { transform: translateY(1px); box-shadow: 0 1px 0 #c9a800; }
+@media (max-width: 480px) { .coffee span { display: none; } .coffee { padding: 7px 10px; } .brand b { font-size: 21px; } }
 
 /* ---- index hero ---- */
 .hero { padding: 48px 16px 34px; text-align: center; background: radial-gradient(900px 300px at 50% -40px, var(--accent-soft), transparent 70%); }
