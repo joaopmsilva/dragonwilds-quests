@@ -1,0 +1,13 @@
+{
+  "name": "dragonwilds-quests",
+  "private": true,
+  "type": "module",
+  "description": "Builds the Dragonwilds quest guide site from the RuneScape: Dragonwilds Wiki.",
+  "scripts": {
+    "build": "node tools/build.mjs"
+  },
+  "devDependencies": {
+    "cheerio": "1.0.0",
+    "sharp": "^0.33.5"
+  }
+}
