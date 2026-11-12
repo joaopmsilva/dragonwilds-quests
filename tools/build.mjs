@@ -421,10 +421,75 @@ async function buildGuide(g, byTitle, redirects) {
     if (heroImg.w >= 800) g.hero = await picture(heroImg.file, heroImg.w, 1200);
     g.thumb = await picture(heroImg.file, heroImg.w, 560);
   }
+  // No picture on the wiki (yet): a drawn one in the region's colour.
+  if (!g.hero || !g.thumb) {
+    const art = await placeholderArt(g);
+    g.hero = g.hero || art.big;
+    g.thumb = g.thumb || art.small;
+    if (!heroImg?.file) g.artOnly = true;
+  }
   const lead = cheerio.load(g.html, null, false)('p').first().text();
   g.summary = text(g.details?.Description || lead).replace(/\s*\[\d+\]/g, '');
   g.lead = text(lead);
   if (g.summary.length > 220) g.summary = g.summary.slice(0, 217).replace(/\s+\S*$/, '') + '…';
+}
+
+// ---------- drawn pictures for guides the wiki has none for ----------
+// Contour lines around a marker in the guide's region colour, the same every build.
+function seeded(str) {
+  let a = parseInt(createHash('sha1').update(str).digest('hex').slice(0, 8), 16);
+  return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const mix = (hex, other, p) => {
+  const c = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const [a, b] = [c(hex), c(other)];
+  return '#' + a.map((v, i) => Math.round(v * p + b[i] * (1 - p)).toString(16).padStart(2, '0')).join('');
+};
+async function placeholderArt(g) {
+  const W = 1200, H = 675;
+  const rnd = seeded(g.slug);
+  const col = regionColor(g.regions[0]);
+  const ring = (cx, cy, r, ph1, ph2) => {
+    const pts = [];
+    for (let i = 0; i < 72; i++) {
+      const t = (i / 72) * Math.PI * 2;
+      const rr = r * (1 + 0.13 * Math.sin(t * 3 + ph1) + 0.06 * Math.sin(t * 5 + ph2));
+      pts.push(`${(cx + Math.cos(t) * rr * 1.25).toFixed(1)},${(cy + Math.sin(t) * rr).toFixed(1)}`);
+    }
+    return `M${pts.join('L')}Z`;
+  };
+  let rings = '';
+  for (let c = 0; c < 3; c++) {
+    const cx = 120 + rnd() * 960, cy = 80 + rnd() * 520, p1 = rnd() * 6, p2 = rnd() * 6;
+    const n = 6 + Math.floor(rnd() * 5);
+    for (let k = 1; k <= n; k++) rings += `<path d="${ring(cx, cy, 26 * k + rnd() * 6, p1 + k * 0.08, p2)}" stroke="${mix(col, '#ffffff', 0.55)}" stroke-opacity="${(0.32 - k * 0.022).toFixed(3)}" stroke-width="1.6" fill="none"/>`;
+  }
+  const ex = W * 0.5, ey = H * 0.5;
+  // Main story and side quests: the game's quest marker; activities: a compass.
+  const emblem = g.kind === 'activity'
+    ? `<g transform="translate(${ex} ${ey})" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="5" stroke-linejoin="round"><circle r="92" stroke-opacity=".35"/><path d="M0-118 22-22 118 0 22 22 0 118-22 22-118 0-22-22Z" fill="${col}" fill-opacity=".55"/><path d="M0-118 0 118M-118 0 118 0" stroke-opacity=".3" stroke-width="3"/><circle r="12" fill="#fff" fill-opacity=".8" stroke="none"/></g>`
+    : `<g transform="translate(${ex} ${ey})" stroke="#fff" stroke-opacity=".8" stroke-width="5" stroke-linejoin="round"><path d="M0-112 92 0 0 112-92 0Z" fill="${col}" fill-opacity=".55"/><path d="M0-82 64 0 0 82-64 0Z" fill="none" stroke-opacity=".35" stroke-width="3"/><rect x="-9" y="-56" width="18" height="70" rx="9" fill="#fff" fill-opacity=".9" stroke="none"/><circle cy="38" r="11" fill="#fff" fill-opacity=".9" stroke="none"/></g>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${mix(col, '#17120c', 0.5)}"/><stop offset="1" stop-color="#0f0c08"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="${col}" stop-opacity=".55"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></radialGradient>
+<pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3" fill="#fff" fill-opacity=".09"/></pattern>
+</defs>
+<rect width="${W}" height="${H}" fill="url(#bg)"/>
+<rect width="${W}" height="${H}" fill="url(#dots)"/>
+${rings}
+<ellipse cx="${ex}" cy="${ey}" rx="330" ry="260" fill="url(#glow)"/>
+${emblem}
+</svg>`;
+  mkdirSync(imgDir, { recursive: true });
+  const out = {};
+  for (const [key, w] of [['big', 1200], ['small', 560]]) {
+    const name = `art-${g.slug}-${w}.webp`;
+    usedImages.add(name);
+    await sharp(Buffer.from(svg)).resize({ width: w }).webp({ quality: 82 }).toFile(path.join(imgDir, name));
+    out[key] = 'img/' + name;
+  }
+  return out;
 }
 
 // ---------- page templates ----------
@@ -455,12 +520,15 @@ ${image ? `<meta property="og:image" content="${SITE}${image}">\n<meta name="twi
 ${leaflet ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">\n' : ''}<link rel="stylesheet" href="${up}style.css">
 </head>`;
 }
+// The bar shared by the three Dragonwilds sites (the same markup is in the penguin map and
+// the mod's site; keep them in step).
 function suite(up) {
-  return `<nav class="suite" aria-label="Dragonwilds fan sites">
-  <span class="suite-label">Dragonwilds fan tools</span>
-  <a href="${up || './'}" aria-current="page"><span aria-hidden="true">📜</span> Quest guides</a>
-  <a href="${PENGUINS}" data-goatcounter-click="suite-penguins"><span aria-hidden="true">🐧</span> Penguin map</a>
-  <a href="${MOD}" data-goatcounter-click="suite-mod"><span aria-hidden="true">🐉</span> Server mod &amp; Discord bot</a>
+  return `<nav class="suite" aria-label="Dragonwilds tools">
+  <div class="suite-in">
+    <a class="st st-q" href="${up || './'}" aria-current="page"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10a3 3 0 0 1 3 3v15H9a3 3 0 0 1-3-3z"/><path d="M10 8h5M10 12h5M10 16h3"/></svg></span><span class="st-t"><b><span class="st-l">Quest guides</span><span class="st-s">Quests</span></b><small>Every quest, step by step</small></span></a>
+    <a class="st st-p" href="${PENGUINS}" data-goatcounter-click="suite-penguins"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-t"><b><span class="st-l">Penguin map</span><span class="st-s">Penguins</span></b><small>All 208 KGP spots</small></span></a>
+    <a class="st st-m" href="${MOD}" data-goatcounter-click="suite-mod"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="7" rx="2"/><rect x="3.5" y="13" width="17" height="7" rx="2"/><path d="M7.5 7.5h.01M7.5 16.5h.01"/></svg></span><span class="st-t"><b><span class="st-l">Server mod</span><span class="st-s">Server mod</span></b><small>Discord bot for your server</small></span></a>
+  </div>
 </nav>`;
 }
 function topbar(up) {
@@ -481,7 +549,8 @@ function footer(up) {
 }
 const regionChip = r => `<span class="rchip" style="--rc:${regionColor(r)}">${esc(r)}</span>`;
 function ribbons(g) {
-  return `${g.released ? `<span class="ribbon new" data-new="${g.released}" hidden>New</span>` : ''}${g.updated ? `<span class="ribbon upd" data-new="${g.updated.date}" hidden title="${esc(g.updated.note)}">Updated</span>` : ''}`;
+  if (!g.released && !g.updated) return '';
+  return `<span class="ribbons">${g.released ? `<span class="ribbon new" data-new="${g.released}" hidden>New</span>` : ''}${g.updated ? `<span class="ribbon upd" data-new="${g.updated.date}" hidden title="${esc(g.updated.note)}">Updated</span>` : ''}</span>`;
 }
 function card(g) {
   return `<li class="card" data-slug="${g.slug}" data-kind="${g.kind}" data-steps="${g.steps || 0}" data-regions="${esc(g.regions.join('|'))}" data-search="${esc((g.title + ' ' + g.regions.join(' ') + ' ' + (g.saga || '') + ' ' + g.summary + ' ' + (g.details?.['Start Point'] || '')).toLowerCase())}">
