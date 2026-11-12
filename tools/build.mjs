@@ -525,26 +525,25 @@ function suite(up) {
   return `<nav class="suite" aria-label="Dragonwilds tools">
   <div class="suite-in">
     <a class="st st-q" href="${up || './'}" aria-current="page"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/journal.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Quest guides</span><span class="st-s">Quests</span></b><small>Every quest, step by step</small></span></a>
-    <a class="st st-p" href="${PENGUINS}" data-goatcounter-click="suite-penguins"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/penguin-coin.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Penguin map</span><span class="st-s">Penguins</span></b><small>All 208 KGP spots</small></span></a>
-    <a class="st st-m" href="${MOD}" data-goatcounter-click="suite-mod"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/lodestone.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Server mod</span><span class="st-s">Server mod</span></b><small>Discord bot for your server</small></span></a>
+    <a class="st st-p" href="${PENGUINS}"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/penguin-coin.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Penguin map</span><span class="st-s">Penguins</span></b><small>All 208 KGP spots</small></span></a>
+    <a class="st st-m" href="${MOD}"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/lodestone.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Server mod</span><span class="st-s">Server mod</span></b><small>Discord bot for your server</small></span></a>
   </div>
 </nav>`;
 }
 function topbar(up) {
   return `<header class="topbar">
   <a class="brand" href="${up || './'}"><img class="mark" src="${up || ''}img/icons/journal.png" alt="" width="48" height="48"><span><b>Dragonwilds Quest Guides</b><small>Every quest &amp; activity</small></span></a>
-  <a class="coffee" href="${COFFEE}" target="_blank" rel="noopener" aria-label="Buy me a coffee" data-goatcounter-click="coffee-topbar"><svg class="cup" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z" fill="currentColor"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3c0 1.5 1.5 1.5 1.5 3M12 3c0 1.5 1.5 1.5 1.5 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
+  <a class="coffee" href="${COFFEE}" target="_blank" rel="noopener" aria-label="Buy me a coffee"><svg class="cup" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z" fill="currentColor"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3c0 1.5 1.5 1.5 1.5 3M12 3c0 1.5 1.5 1.5 1.5 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
 </header>
 ${modBanner(up || '')}`;
 }
-// A strip under the header pointing players who've never run a server to the mod. Hidden for
+// A quiet line under the header for players who'd like to host their own server. Hidden for
 // good once closed; the inline script decides before the page draws, so nothing jumps.
 function modBanner(up) {
-  return `<aside class="modbar" id="modbar" aria-label="Your own server" hidden>
+  return `<aside class="modbar" id="modbar" aria-label="Hosting your own server" hidden>
   <div class="modbar-in">
     <img class="modbar-ico" src="${up}img/icons/lodestone.png" alt="" width="48" height="48">
-    <p><b>Want your own server for you and your friends?</b> <span>No tech skills needed: rent a small server, paste one line and answer a few questions. A free Discord bot comes with it.</span></p>
-    <a class="modbar-go" href="${MOD}" data-goatcounter-click="modbar">Show me how</a>
+    <p>Want to host a Dragonwilds server for your friends? <a href="${MOD}">Here's a step-by-step setup guide for beginners</a>.</p>
     <button type="button" class="modbar-x" id="modbarClose" aria-label="Hide this">×</button>
   </div>
 </aside>
@@ -555,9 +554,10 @@ function footer(up) {
   <div class="foot-in">
     <p><b>Dragonwilds Quest Guides</b> is a free fan site. Guides, maps and pictures come from the <a href="${WIKI}/" target="_blank" rel="noopener">RuneScape: Dragonwilds Wiki</a> and its editors, under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">CC BY-NC-SA 3.0</a>. Spotted a mistake? Fix it on the wiki and it shows up here at the next rebuild.</p>
     <p><i>RuneScape: Dragonwilds</i> and its art © Jagex Ltd. Not affiliated with Jagex. Visits are counted with GoatCounter: no cookies, nothing personal.</p>
-    <p class="foot-links"><a href="${PENGUINS}">Penguin map</a> · <a href="${MOD}">Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${COFFEE}" target="_blank" rel="noopener" data-goatcounter-click="coffee-footer">Buy me a coffee</a></p>
+    <p class="foot-links"><a href="${PENGUINS}">Penguin map</a> · <a href="${MOD}">Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${COFFEE}" target="_blank" rel="noopener">Buy me a coffee</a></p>
   </div>
 </footer>
+<script>window.goatcounter = { path: '/quest-guides', title: 'Quest guides' };</script>
 <script data-goatcounter="https://kgpguide.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
 }
 const regionChip = r => `<span class="rchip" style="--rc:${regionColor(r)}">${esc(r)}</span>`;
@@ -652,12 +652,12 @@ ${topbar('')}
     <p class="empty" id="empty" hidden>No guide matches that. <button type="button" class="linkbtn" id="clear">Show everything</button></p>
 
     <aside class="promos">
-      <a class="promo penguin" href="${PENGUINS}" data-goatcounter-click="promo-penguins">
+      <a class="promo penguin" href="${PENGUINS}">
         <img class="promo-ico" src="img/icons/penguin-coin.png" alt="" width="48" height="48" aria-hidden="true">
         <span><b>Hunting penguins?</b> All 208 Killer Gentoo Penguin spots on an interactive map, with a found-it checklist.</span>
         <span class="promo-go">Open the map →</span>
       </a>
-      <a class="promo mod" href="${MOD}" data-goatcounter-click="promo-mod">
+      <a class="promo mod" href="${MOD}">
         <img class="promo-ico" src="img/icons/lodestone.png" alt="" width="48" height="48" aria-hidden="true">
         <span><b>Run your own server?</b> A free server mod and Discord bot: live chat, quest and death feeds, leaderboards, admin tools.</span>
         <span class="promo-go">See what it does →</span>
@@ -708,7 +708,7 @@ ${topbar('../')}
     ${toc ? `<aside class="side">${toc}</aside>` : ''}
     <article class="content${toc ? '' : ' wide'}">
       ${g.updated ? `<p class="notice upd"><b>Updated ${niceDate(g.updated.date)}:</b> ${esc(g.updated.note)}.</p>` : ''}
-      ${g.penguins ? `<a class="cta" href="${PENGUINS}" data-goatcounter-click="guide-penguins"><img class="cta-ico" src="../img/icons/penguin-coin.png" alt="" width="48" height="48" aria-hidden="true"><span><b>Open the penguin map</b> All 208 spots, filters and a found-it checklist</span><span aria-hidden="true">→</span></a>` : ''}
+      ${g.penguins ? `<a class="cta" href="${PENGUINS}"><img class="cta-ico" src="../img/icons/penguin-coin.png" alt="" width="48" height="48" aria-hidden="true"><span><b>Open the penguin map</b> All 208 spots, filters and a found-it checklist</span><span aria-hidden="true">→</span></a>` : ''}
       ${g.stub ? `<p class="notice stub">The wiki is still filling in this guide, so it may be short or missing steps. You can <a href="${wikiUrl}" target="_blank" rel="noopener">add what you know there</a>.</p>` : ''}
       ${g.html}
       <nav class="pn" aria-label="More guides">
@@ -719,7 +719,7 @@ ${topbar('../')}
     </article>
   </div>
   <aside class="wrap promos slim">
-    <a class="promo mod" href="${MOD}" data-goatcounter-click="guide-promo-mod">
+    <a class="promo mod" href="${MOD}">
       <img class="promo-ico" src="../img/icons/lodestone.png" alt="" width="48" height="48" aria-hidden="true">
       <span><b>Playing on your own server?</b> Get a Discord bot that posts quest completions, deaths and chat, with leaderboards and admin tools.</span>
       <span class="promo-go">Take a look →</span>

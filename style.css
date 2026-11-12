@@ -89,22 +89,19 @@ button { font: inherit; color: inherit; }
 .coffee:active { transform: translateY(1px); box-shadow: 0 1px 0 #c9a800; }
 @media (max-width: 480px) { .coffee span { display: none; } .coffee { padding: 7px 10px; } .brand b { font-size: 21px; } }
 
-/* ---- "your own server" strip under the header (the mod's blue, to tell it apart) ---- */
-.modbar { position: relative; background: color-mix(in srgb, #5865f2 12%, var(--panel)); border-bottom: 1px solid color-mix(in srgb, #5865f2 28%, var(--line)); }
-.modbar-in { max-width: 1200px; margin: 0 auto; padding: 9px 16px; display: flex; align-items: center; gap: 12px; }
-.modbar-ico { width: 30px; height: 30px; flex: none; }
-.modbar p { margin: 0; flex: 1; min-width: 0; font-size: 14px; line-height: 1.4; color: var(--muted); }
-.modbar p b { color: var(--ink); font-weight: 600; }
-.modbar-go { flex: none; padding: 7px 14px; border-radius: 999px; background: #5865f2; color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
-.modbar-go:hover { background: #4752c4; }
-.modbar-x { flex: none; width: 30px; height: 30px; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; }
-.modbar-x:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
+/* ---- a quiet line under the header about hosting your own server ---- */
+.modbar { border-bottom: 1px solid var(--line); }
+.modbar-in { max-width: 1200px; margin: 0 auto; padding: 6px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.modbar-ico { width: 18px; height: 18px; flex: none; opacity: .85; }
+.modbar p { margin: 0; min-width: 0; font-size: 13px; line-height: 1.4; color: var(--muted); }
+.modbar a { color: var(--ink); text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent); }
+.modbar a:hover { color: var(--accent); }
+.modbar-x { flex: none; width: 24px; height: 24px; margin-left: 4px; border: 0; border-radius: 50%; background: none; color: var(--muted); font-size: 16px; line-height: 1; cursor: pointer; opacity: .7; }
+.modbar-x:hover { opacity: 1; background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
 @media (max-width: 700px) {
-  .modbar-in { flex-wrap: wrap; align-items: flex-start; gap: 8px 10px; padding: 10px 44px 10px 12px; }
-  .modbar p { flex: 1 1 calc(100% - 42px); }
-  .modbar p span { display: block; margin-top: 2px; }
-  .modbar-go { margin-left: 40px; }
-  .modbar-x { position: absolute; top: 8px; right: 8px; }
+  .modbar-in { justify-content: flex-start; align-items: flex-start; padding: 7px 12px; }
+  .modbar-ico { margin-top: 1px; }
+  .modbar p { flex: 1; }
 }
 
 /* ---- index hero ---- */
