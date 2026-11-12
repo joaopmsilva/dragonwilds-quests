@@ -23,7 +23,7 @@ const SITE = 'https://joaopmsilva.github.io/dragonwilds-quests/';
 const PENGUINS = 'https://joaopmsilva.github.io/dragonwilds-penguins/';
 const MOD = 'https://joaopmsilva.github.io/RSDWServerAPI/';
 const REPO = 'https://github.com/joaopmsilva/dragonwilds-quests';
-const COFFEE = 'https://buymeacoffee.com/paradoxjs';
+const KOFI = 'https://ko-fi.com/paradoxjs';
 const UA = 'dragonwilds-quests-builder/1.0 (+https://github.com/joaopmsilva/dragonwilds-quests)';
 const REFRESH = process.argv.includes('--refresh');
 
@@ -533,7 +533,7 @@ function suite(up) {
 function topbar(up) {
   return `<header class="topbar">
   <a class="brand" href="${up || './'}"><img class="mark" src="${up || ''}img/icons/journal.png" alt="" width="48" height="48"><span><b>Dragonwilds Quest Guides</b><small>Every quest &amp; activity</small></span></a>
-  <a class="coffee" href="${COFFEE}" target="_blank" rel="noopener" aria-label="Buy me a coffee"><svg class="cup" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z" fill="currentColor"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3c0 1.5 1.5 1.5 1.5 3M12 3c0 1.5 1.5 1.5 1.5 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
+  <a class="coffee" href="${KOFI}" target="_blank" rel="noopener" aria-label="Support me on Ko-fi" data-goatcounter-click="ko-fi" data-goatcounter-title="Ko-fi button"><svg class="cup" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z" fill="currentColor"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 16.4s-3.1-1.9-3.1-3.9a1.6 1.6 0 0 1 3.1-.7 1.6 1.6 0 0 1 3.1.7c0 2-3.1 3.9-3.1 3.9z" fill="#ff5e5b"/></svg><span>Support me on Ko-fi</span></a>
 </header>
 ${modBanner(up || '')}`;
 }
@@ -554,7 +554,7 @@ function footer(up) {
   <div class="foot-in">
     <p><b>Dragonwilds Quest Guides</b> is a free fan site. Guides, maps and pictures come from the <a href="${WIKI}/" target="_blank" rel="noopener">RuneScape: Dragonwilds Wiki</a> and its editors, under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">CC BY-NC-SA 3.0</a>. Spotted a mistake? Fix it on the wiki and it shows up here at the next rebuild.</p>
     <p><i>RuneScape: Dragonwilds</i> and its art © Jagex Ltd. Not affiliated with Jagex. Visits are counted with GoatCounter: no cookies, nothing personal.</p>
-    <p class="foot-links"><a href="${PENGUINS}">Penguin map</a> · <a href="${MOD}">Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${COFFEE}" target="_blank" rel="noopener">Buy me a coffee</a></p>
+    <p class="foot-links"><a href="${PENGUINS}">Penguin map</a> · <a href="${MOD}">Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${KOFI}" target="_blank" rel="noopener" data-goatcounter-click="ko-fi" data-goatcounter-title="Ko-fi button">Support me on Ko-fi</a></p>
   </div>
 </footer>
 <script>window.goatcounter = { path: '/quest-guides', title: 'Quest guides' };</script>

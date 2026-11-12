@@ -4,7 +4,7 @@
 
 👉 **https://joaopmsilva.github.io/dragonwilds-quests/**
 
-[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-ffdd00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/paradoxjs)
+[![Support me on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20me-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/paradoxjs)
 [![Penguin map](https://img.shields.io/badge/Penguin%20map-KGP%20Field%20Guide-c9431a?style=for-the-badge)](https://joaopmsilva.github.io/dragonwilds-penguins/)
 [![Server mod](https://img.shields.io/badge/Server%20mod-RSDWServerAPI-5865F2?style=for-the-badge&logo=github&logoColor=white)](https://joaopmsilva.github.io/RSDWServerAPI/)
 
@@ -46,4 +46,4 @@ The maps use the world-map tiles from the [penguin map](https://github.com/joaop
 - 🐧 **[KGP Field Guide](https://joaopmsilva.github.io/dragonwilds-penguins/)**: all 208 Killer Gentoo Penguin spots on an interactive map.
 - 🐉 **[RSDWServerAPI](https://joaopmsilva.github.io/RSDWServerAPI/)**: a free server mod and Discord bot for Dragonwilds dedicated servers.
 
-Made by Paradox. ☕ **[Buy me a coffee](https://buymeacoffee.com/paradoxjs)** if this helped.
+Made by Paradox. ☕ **[Support me on Ko-fi](https://ko-fi.com/paradoxjs)** if this helped.
