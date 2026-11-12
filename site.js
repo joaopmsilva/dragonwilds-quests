@@ -33,6 +33,14 @@
     el.hidden = !(days >= -1 && days <= NEW_DAYS);
   });
 
+  // The "your own server" strip under the header: closing it hides it on every page.
+  const modbarClose = document.getElementById('modbarClose');
+  if (modbarClose) modbarClose.addEventListener('click', () => {
+    const b = document.getElementById('modbar');
+    if (b) b.remove();
+    try { localStorage.setItem('dq-modbar-closed-v1', '1'); } catch (e) { /* private mode */ }
+  });
+
   const page = document.body.dataset.slug;
   if (page) guide(page); else index();
 
