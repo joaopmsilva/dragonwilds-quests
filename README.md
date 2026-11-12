@@ -10,7 +10,10 @@
 
 - 🗺️ **All 38 quests and 9 activities**: the main story in order, side quests by region, and activities such as X Marks The Spot, The Rug Pull and Penguin Hunting
 - ✦ **New and updated guides are marked**, and the newest update has its own row at the top
-- ✅ **A done checklist** that stays in your browser, with your progress on the front page
+- ▶️ **Follow along step by step**: tick off each walkthrough step, see what's next, and jump back to it from the floating progress bar
+- 🎒 **Items to bring** as a checklist, with a copyable list and a bag you can open from anywhere in the guide
+- 🎉 **Finish the last step** and the quest is marked done
+- ✅ **Your progress on the front page**: quests done, the ones you've started ("Pick up where you left off") and what's next in the story. It all stays in your browser
 - 🔎 **Search and filters** by type and region
 - 📍 **Interactive maps** of quest locations, on the game's world map
 - 📱 Works on phones, light and dark mode

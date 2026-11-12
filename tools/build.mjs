@@ -118,6 +118,14 @@ function isoDate(s) {
   return `${m[3]}-${String(MONTHS.indexOf(m[2]) + 1).padStart(2, '0')}-${m[1].padStart(2, '0')}`;
 }
 const niceDate = iso => { const [y, m, d] = iso.split('-'); return `${+d} ${MONTHS[+m - 1]} ${y}`; };
+// A short id from a line's text, so ticks survive a rebuild while the wording stays the same.
+function stableId(t, used) {
+  const base = createHash('sha1').update(t).digest('hex').slice(0, 8);
+  let id = base;
+  for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+  used.add(id);
+  return id;
+}
 const slugify = s => s.toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const regionsOf = s => s.split('/').map(r => r.trim()).filter(Boolean);
 
@@ -235,6 +243,12 @@ async function buildGuide(g, byTitle, redirects) {
     $(t).find('tr').each((__, tr) => {
       const k = text($(tr).find('.quest-infobox-title').text());
       const v = $(tr).find('td.quest-infobox-row').not('.quest-infobox-icon').first();
+      // Required items become a checklist: one tick per top-level line.
+      if (/^required items$/i.test(k)) {
+        const used = new Set();
+        v.children('ul, ol').children('li').each((___, li) => { $(li).addClass('need').attr('data-need', stableId(text($(li).text()), used)); });
+        g.items = v.find('li.need').length;
+      }
       if (k && v.length && text(v.text())) rows.push([k, v.html()]);
     });
     g.details = Object.fromEntries(rows.map(([k, v]) => [k, text(cheerio.load(v, null, false).root().text())]));
@@ -340,7 +354,7 @@ async function buildGuide(g, byTitle, redirects) {
   g.hasMap = maps.length > 0;
 
   // Tidy: no inline styles or wiki classes, except the ones the site styles.
-  const KEEP = new Set(['qd', 'qd-row', 'qd-k', 'qd-v', 'qmap', 'gallery', 'gfig', 'fig', 'right', 'left', 'zoom', 'wl', 'mapnote', 'wikitable', 'sortable', 'lighttable', 'checklist', 'buglist', 'keypress', 'inventory-image', 'pic-link', 'table-bg-green', 'table-bg-yellow', 'flexbox-wrapper', 'flexbox-row', 'flexbox-item', 'flexbox-image', 'flexbox-caption', 'vid']);
+  const KEEP = new Set(['qd', 'qd-row', 'qd-k', 'qd-v', 'qmap', 'gallery', 'gfig', 'fig', 'right', 'left', 'zoom', 'wl', 'mapnote', 'wikitable', 'sortable', 'lighttable', 'checklist', 'buglist', 'keypress', 'inventory-image', 'pic-link', 'table-bg-green', 'table-bg-yellow', 'flexbox-wrapper', 'flexbox-row', 'flexbox-item', 'flexbox-image', 'flexbox-caption', 'vid', 'need']);
   $('*').each((_, e) => {
     const $e = $(e);
     $e.removeAttr('style').removeAttr('bgcolor').removeAttr('align').removeAttr('valign').removeAttr('data-file-width').removeAttr('data-file-height').removeAttr('typeof').removeAttr('lang').removeAttr('dir').removeAttr('role');
@@ -365,19 +379,37 @@ async function buildGuide(g, byTitle, redirects) {
   }
   let html = '';
   const toc = [];
+  const usedSteps = new Set();
+  g.steps = 0;
   for (const s of out) {
-    const inner = s.nodes.map(n => $.html(n)).join('');
+    let inner = s.nodes.map(n => $.html(n)).join('');
     if (s.lead) { html += inner; continue; }
+    // Walkthrough paragraphs and top-level list lines become steps players can tick off.
+    if (/walkthrough/.test(s.name) && !FOLD.has(s.name)) {
+      const $s = cheerio.load(inner, null, false);
+      $s('p, li').each((_, el) => {
+        const $e = $s(el);
+        if ($e.closest('table, figure, .gallery, .qd, details, .tw').length || $e.parents('li').length) return;
+        const t = text($e.text());
+        if (t.length < 30) return;
+        $e.addClass('step').attr('data-step', stableId(t, usedSteps));
+        g.steps++;
+      });
+      inner = $s.html();
+    }
     if (DROP.has(s.name)) continue;
     const id = $(s.h).attr('id') || slugify(s.name);
     const title = text($(s.h).text());
     if (!text(cheerio.load(inner, null, false).root().text()) && !/<img|<video|qmap/.test(inner)) continue;
     toc.push({ id, title, sub: cheerio.load(inner, null, false)('h3').toArray().map(h => ({ id: h.attribs.id, title: text(cheerio.load(h).text()) })).filter(x => x.id) });
+    if (/walkthrough/.test(s.name) && !g.walkId) g.walkId = id;
     if (FOLD.has(s.name)) html += `<details class="sect" id="${esc(id)}"><summary><h2>${esc(title)}</h2></summary>${inner}</details>`;
     else html += `<section><h2 id="${esc(id)}">${esc(title)}</h2>${inner}</section>`;
   }
   g.toc = toc;
   g.html = html.replace(/\n{2,}/g, '\n');
+  g.maps = (g.html.match(/class="qmap"/g) || []).length;
+  g.minutes = Math.max(1, Math.round(text(cheerio.load(g.html, null, false).root().text()).split(' ').length / 220));
 
   // Card picture and summary.
   if (!heroImg) {
@@ -452,12 +484,13 @@ function ribbons(g) {
   return `${g.released ? `<span class="ribbon new" data-new="${g.released}" hidden>New</span>` : ''}${g.updated ? `<span class="ribbon upd" data-new="${g.updated.date}" hidden title="${esc(g.updated.note)}">Updated</span>` : ''}`;
 }
 function card(g) {
-  return `<li class="card" data-slug="${g.slug}" data-kind="${g.kind}" data-regions="${esc(g.regions.join('|'))}" data-search="${esc((g.title + ' ' + g.regions.join(' ') + ' ' + (g.saga || '') + ' ' + g.summary + ' ' + (g.details?.['Start Point'] || '')).toLowerCase())}">
+  return `<li class="card" data-slug="${g.slug}" data-kind="${g.kind}" data-steps="${g.steps || 0}" data-regions="${esc(g.regions.join('|'))}" data-search="${esc((g.title + ' ' + g.regions.join(' ') + ' ' + (g.saga || '') + ' ' + g.summary + ' ' + (g.details?.['Start Point'] || '')).toLowerCase())}">
   <a href="${g.slug}/">
-    <div class="card-img">${g.thumb ? `<img src="${g.thumb}" alt="" loading="lazy" decoding="async">` : `<span class="card-ph" aria-hidden="true"></span>`}${ribbons(g)}<span class="tick" aria-label="Done" hidden>✓</span></div>
+    <div class="card-img">${g.thumb ? `<img src="${g.thumb}" alt="" loading="lazy" decoding="async">` : `<span class="card-ph" aria-hidden="true"></span>`}${ribbons(g)}<span class="tick" aria-label="Done" hidden>✓</span><span class="cprog" hidden><i></i></span></div>
     <div class="card-body">
       <h3>${esc(g.title)}</h3>
       <div class="card-meta">${g.regions.map(regionChip).join('')}${g.kind === 'primary' && g.saga ? `<span class="saga">${esc(g.saga)}</span>` : ''}${g.stub ? '<span class="stubtag" title="The wiki marks this page as unfinished">Short guide</span>' : ''}</div>
+      <p class="cstat" hidden></p>
       <p>${esc(g.summary)}</p>
     </div>
   </a>
@@ -485,6 +518,14 @@ ${topbar('')}
         <input type="search" id="q" placeholder="Search quests, places, people…" aria-label="Search the guides" autocomplete="off">
       </div>
       <div class="progress" id="progress" hidden><div class="bar"><span id="bar"></span></div><span id="ptext"></span></div>
+      <p class="nextup" id="nextup" hidden></p>
+    </div>
+  </section>
+
+  <section class="continue" id="continue" hidden>
+    <div class="wrap">
+      <h2 class="sec-title"><span class="spark" aria-hidden="true">▶</span> Pick up where you left off</h2>
+      <ul class="cards" id="contCards"></ul>
     </div>
   </section>
 
@@ -567,7 +608,14 @@ ${topbar('../')}
       <div class="gtags"><span class="kind">${esc(kindLabel)}</span>${g.regions.map(regionChip).join('')}${ribbons(g)}</div>
       <h1>${esc(g.title)}</h1>
       ${g.details?.Description ? `<p class="gdesc">${esc(g.details.Description)}</p>` : ''}
+      <ul class="gstats">${[
+        g.steps ? `<li><b>${g.steps}</b> steps</li>` : '',
+        g.items ? `<li><b>${g.items}</b> ${g.items === 1 ? 'item' : 'items'} to bring</li>` : '',
+        g.maps ? `<li><b>${g.maps}</b> ${g.maps === 1 ? 'map' : 'maps'}</li>` : '',
+        `<li><b>${g.minutes}</b> min read</li>`,
+      ].join('')}</ul>
       <div class="gactions">
+        ${g.steps ? `<a class="start-btn" id="startBtn" href="#${esc(g.walkId || 'top')}"><span aria-hidden="true">▶</span> <span class="lbl">Start the walkthrough</span></a>` : ''}
         <button type="button" class="done-btn" id="doneBtn" aria-pressed="false"><span class="box" aria-hidden="true"></span><span class="lbl">Mark as done</span></button>
         ${g.released ? `<span class="rel">Released ${niceDate(g.released)}</span>` : ''}
       </div>
