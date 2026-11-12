@@ -109,7 +109,7 @@
           a.href = next.querySelector('a').getAttribute('href');
           a.textContent = next.querySelector('h3').textContent + ' →';
           nu.append(a);
-        } else nu.textContent = 'You finished the main story. 🎉';
+        } else nu.textContent = 'You finished the main story. Well done!';
       }
     }
     function apply() {
@@ -352,7 +352,7 @@
         (steps.length ? '<div class="ring" aria-hidden="true"><svg viewBox="0 0 36 36"><circle class="bg" cx="18" cy="18" r="15.5"/><circle class="fg" cx="18" cy="18" r="15.5"/></svg><span class="pct"></span></div>' +
           '<div class="ftext"><b class="fstep"></b><small class="fsect"></small></div>' +
           '<button type="button" class="fbtn primary fgo">Continue</button>' : '<div class="ftext"><b>Items to bring</b><small class="fsect"></small></div>') +
-        (needs.length ? '<button type="button" class="fbtn fbag" aria-expanded="false"><span aria-hidden="true">🎒</span> <span class="fbagn"></span></button>' : '') +
+        (needs.length ? '<button type="button" class="fbtn fbag" aria-expanded="false"><img src="../img/icons/chest.png" alt="" width="48" height="48"> <span class="fbagn"></span></button>' : '') +
         '<button type="button" class="fbtn icon ftop" aria-label="Back to top">↑</button>' +
         (needs.length ? '<div class="bag" hidden><p>Items to bring</p><ul></ul></div>' : '');
       document.body.append(bar);

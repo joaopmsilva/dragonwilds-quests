@@ -493,7 +493,6 @@ ${emblem}
 }
 
 // ---------- page templates ----------
-const ICON = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='3' width='22' height='26' rx='3' fill='%23b8862b'/%3E%3Crect x='9' y='8' width='14' height='2.4' rx='1.2' fill='%23fff8e6'/%3E%3Crect x='9' y='13' width='14' height='2.4' rx='1.2' fill='%23fff8e6'/%3E%3Crect x='9' y='18' width='9' height='2.4' rx='1.2' fill='%23fff8e6'/%3E%3Cpath d='M20 21l2.2 2.2L26 19' stroke='%23fff8e6' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E`;
 const KIND = { primary: 'Main story', secondary: 'Side quest', activity: 'Activity' };
 const KIND_PLURAL = { primary: 'Main story quests', secondary: 'Side quests', activity: 'Activities' };
 const regionColor = r => REGIONS[r] || '#5b6876';
@@ -513,7 +512,7 @@ function head({ title, description, url, image, depth, leaflet }) {
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url}">
 ${image ? `<meta property="og:image" content="${SITE}${image}">\n<meta name="twitter:card" content="summary_large_image">\n` : ''}<meta name="theme-color" content="#1a1611">
-<link rel="icon" href="${ICON}">
+<link rel="icon" type="image/png" href="${up}img/icons/journal.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -525,16 +524,16 @@ ${leaflet ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs
 function suite(up) {
   return `<nav class="suite" aria-label="Dragonwilds tools">
   <div class="suite-in">
-    <a class="st st-q" href="${up || './'}" aria-current="page"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10a3 3 0 0 1 3 3v15H9a3 3 0 0 1-3-3z"/><path d="M10 8h5M10 12h5M10 16h3"/></svg></span><span class="st-t"><b><span class="st-l">Quest guides</span><span class="st-s">Quests</span></b><small>Every quest, step by step</small></span></a>
-    <a class="st st-p" href="${PENGUINS}" data-goatcounter-click="suite-penguins"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="st-t"><b><span class="st-l">Penguin map</span><span class="st-s">Penguins</span></b><small>All 208 KGP spots</small></span></a>
-    <a class="st st-m" href="${MOD}" data-goatcounter-click="suite-mod"><span class="st-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="7" rx="2"/><rect x="3.5" y="13" width="17" height="7" rx="2"/><path d="M7.5 7.5h.01M7.5 16.5h.01"/></svg></span><span class="st-t"><b><span class="st-l">Server mod</span><span class="st-s">Server mod</span></b><small>Discord bot for your server</small></span></a>
+    <a class="st st-q" href="${up || './'}" aria-current="page"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/journal.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Quest guides</span><span class="st-s">Quests</span></b><small>Every quest, step by step</small></span></a>
+    <a class="st st-p" href="${PENGUINS}" data-goatcounter-click="suite-penguins"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/penguin-coin.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Penguin map</span><span class="st-s">Penguins</span></b><small>All 208 KGP spots</small></span></a>
+    <a class="st st-m" href="${MOD}" data-goatcounter-click="suite-mod"><span class="st-ico" aria-hidden="true"><img src="${up}img/icons/lodestone.png" alt="" width="48" height="48"></span><span class="st-t"><b><span class="st-l">Server mod</span><span class="st-s">Server mod</span></b><small>Discord bot for your server</small></span></a>
   </div>
 </nav>`;
 }
 function topbar(up) {
   return `<header class="topbar">
-  <a class="brand" href="${up || './'}"><span class="mark" aria-hidden="true"></span><span><b>Dragonwilds Quest Guides</b><small>Every quest &amp; activity</small></span></a>
-  <a class="coffee" href="${COFFEE}" target="_blank" rel="noopener" data-goatcounter-click="coffee-topbar"><span aria-hidden="true">☕</span> <span>Buy me a coffee</span></a>
+  <a class="brand" href="${up || './'}"><img class="mark" src="${up || ''}img/icons/journal.png" alt="" width="48" height="48"><span><b>Dragonwilds Quest Guides</b><small>Every quest &amp; activity</small></span></a>
+  <a class="coffee" href="${COFFEE}" target="_blank" rel="noopener" data-goatcounter-click="coffee-topbar"><svg class="cup" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z" fill="currentColor"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 3c0 1.5 1.5 1.5 1.5 3M12 3c0 1.5 1.5 1.5 1.5 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
 </header>`;
 }
 function footer(up) {
@@ -542,7 +541,7 @@ function footer(up) {
   <div class="foot-in">
     <p><b>Dragonwilds Quest Guides</b> is a free fan site. Guides, maps and pictures come from the <a href="${WIKI}/" target="_blank" rel="noopener">RuneScape: Dragonwilds Wiki</a> and its editors, under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">CC BY-NC-SA 3.0</a>. Spotted a mistake? Fix it on the wiki and it shows up here at the next rebuild.</p>
     <p><i>RuneScape: Dragonwilds</i> and its art © Jagex Ltd. Not affiliated with Jagex. Visits are counted with GoatCounter: no cookies, nothing personal.</p>
-    <p class="foot-links"><a href="${PENGUINS}">🐧 Penguin map</a> · <a href="${MOD}">🐉 Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${COFFEE}" target="_blank" rel="noopener" data-goatcounter-click="coffee-footer">☕ Buy me a coffee</a></p>
+    <p class="foot-links"><a href="${PENGUINS}">Penguin map</a> · <a href="${MOD}">Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${COFFEE}" target="_blank" rel="noopener" data-goatcounter-click="coffee-footer">Buy me a coffee</a></p>
   </div>
 </footer>
 <script data-goatcounter="https://kgpguide.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
@@ -593,14 +592,14 @@ ${topbar('')}
 
   <section class="continue" id="continue" hidden>
     <div class="wrap">
-      <h2 class="sec-title"><span class="spark" aria-hidden="true">▶</span> Pick up where you left off</h2>
+      <h2 class="sec-title"><img class="sec-ico" src="img/icons/scroll.png" alt="" width="48" height="48" aria-hidden="true"> Pick up where you left off</h2>
       <ul class="cards" id="contCards"></ul>
     </div>
   </section>
 
   ${latestGuides.length ? `<section class="latest" id="latest">
     <div class="wrap">
-      <h2 class="sec-title"><span class="spark" aria-hidden="true">✦</span> New in the latest update <small>${niceDate(latest)}</small></h2>
+      <h2 class="sec-title"><img class="sec-ico" src="img/icons/primary.png" alt="" width="48" height="48" aria-hidden="true"> New in the latest update <small>${niceDate(latest)}</small></h2>
       <ul class="cards">${latestGuides.map(card).join('')}</ul>
     </div>
   </section>` : ''}
@@ -619,12 +618,12 @@ ${topbar('')}
     </div>
 
     <section class="group" id="primary" data-group="primary">
-      <h2 class="sec-title">Main story <small>Play these in order</small></h2>
+      <h2 class="sec-title"><img class="sec-ico" src="img/icons/primary.png" alt="" width="48" height="48" aria-hidden="true"> Main story <small>Play these in order</small></h2>
       <ol class="cards story">${primary.map(card).join('')}</ol>
     </section>
 
     <section class="group" id="secondary" data-group="secondary">
-      <h2 class="sec-title">Side quests <small>By region</small></h2>
+      <h2 class="sec-title"><img class="sec-ico" src="img/icons/secondary.png" alt="" width="48" height="48" aria-hidden="true"> Side quests <small>By region</small></h2>
       ${regionsSecondary.map(r => `<div class="region" data-region="${esc(r)}">
         <h3 class="region-title" style="--rc:${regionColor(r)}">${esc(r)}</h3>
         <ul class="cards">${secondary.filter(g => g.regions.includes(r)).map(card).join('')}</ul>
@@ -632,7 +631,7 @@ ${topbar('')}
     </section>
 
     <section class="group" id="activity" data-group="activity">
-      <h2 class="sec-title">Activities <small>Trails, challenges and hunts</small></h2>
+      <h2 class="sec-title"><img class="sec-ico" src="img/icons/chest.png" alt="" width="48" height="48" aria-hidden="true"> Activities <small>Trails, challenges and hunts</small></h2>
       <ul class="cards">${acts.map(card).join('')}</ul>
     </section>
 
@@ -640,12 +639,12 @@ ${topbar('')}
 
     <aside class="promos">
       <a class="promo penguin" href="${PENGUINS}" data-goatcounter-click="promo-penguins">
-        <span class="promo-ico" aria-hidden="true">🐧</span>
+        <img class="promo-ico" src="img/icons/penguin-coin.png" alt="" width="48" height="48" aria-hidden="true">
         <span><b>Hunting penguins?</b> All 208 Killer Gentoo Penguin spots on an interactive map, with a found-it checklist.</span>
         <span class="promo-go">Open the map →</span>
       </a>
       <a class="promo mod" href="${MOD}" data-goatcounter-click="promo-mod">
-        <span class="promo-ico" aria-hidden="true">🐉</span>
+        <img class="promo-ico" src="img/icons/lodestone.png" alt="" width="48" height="48" aria-hidden="true">
         <span><b>Run your own server?</b> A free server mod and Discord bot: live chat, quest and death feeds, leaderboards, admin tools.</span>
         <span class="promo-go">See what it does →</span>
       </a>
@@ -695,7 +694,7 @@ ${topbar('../')}
     ${toc ? `<aside class="side">${toc}</aside>` : ''}
     <article class="content${toc ? '' : ' wide'}">
       ${g.updated ? `<p class="notice upd"><b>Updated ${niceDate(g.updated.date)}:</b> ${esc(g.updated.note)}.</p>` : ''}
-      ${g.penguins ? `<a class="cta" href="${PENGUINS}" data-goatcounter-click="guide-penguins"><span aria-hidden="true">🗺️</span><span><b>Open the penguin map</b> All 208 spots, filters and a found-it checklist</span><span aria-hidden="true">→</span></a>` : ''}
+      ${g.penguins ? `<a class="cta" href="${PENGUINS}" data-goatcounter-click="guide-penguins"><img class="cta-ico" src="../img/icons/penguin-coin.png" alt="" width="48" height="48" aria-hidden="true"><span><b>Open the penguin map</b> All 208 spots, filters and a found-it checklist</span><span aria-hidden="true">→</span></a>` : ''}
       ${g.stub ? `<p class="notice stub">The wiki is still filling in this guide, so it may be short or missing steps. You can <a href="${wikiUrl}" target="_blank" rel="noopener">add what you know there</a>.</p>` : ''}
       ${g.html}
       <nav class="pn" aria-label="More guides">
@@ -707,7 +706,7 @@ ${topbar('../')}
   </div>
   <aside class="wrap promos slim">
     <a class="promo mod" href="${MOD}" data-goatcounter-click="guide-promo-mod">
-      <span class="promo-ico" aria-hidden="true">🐉</span>
+      <img class="promo-ico" src="../img/icons/lodestone.png" alt="" width="48" height="48" aria-hidden="true">
       <span><b>Playing on your own server?</b> Get a Discord bot that posts quest completions, deaths and chat, with leaderboards and admin tools.</span>
       <span class="promo-go">Take a look →</span>
     </a>
@@ -780,6 +779,6 @@ writeFileSync(path.join(ROOT, 'guides.json'), JSON.stringify(guides.map(g => ({
 
 // Pictures no page uses any more.
 let removed = 0;
-for (const f of readdirSync(imgDir)) if (!usedImages.has(f)) { rmSync(path.join(imgDir, f)); removed++; }
-const size = readdirSync(imgDir).reduce((n, f) => n + statSync(path.join(imgDir, f)).size, 0);
+for (const f of readdirSync(imgDir)) if (!usedImages.has(f) && statSync(path.join(imgDir, f)).isFile()) { rmSync(path.join(imgDir, f)); removed++; }
+const size = readdirSync(imgDir).reduce((n, f) => { const st = statSync(path.join(imgDir, f)); return n + (st.isFile() ? st.size : 0); }, 0);
 console.log(`\n${guides.length} guides, ${usedImages.size} pictures (${(size / 1e6).toFixed(1)} MB)${removed ? `, removed ${removed} old` : ''}. Latest update: ${latest}.`);
