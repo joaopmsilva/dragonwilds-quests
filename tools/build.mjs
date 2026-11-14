@@ -557,7 +557,7 @@ function footer(up) {
     <p class="foot-links"><a href="${PENGUINS}">Penguin map</a> · <a href="${MOD}">Server mod &amp; Discord bot</a> · <a href="${REPO}" target="_blank" rel="noopener">Source</a> · <a href="${KOFI}" target="_blank" rel="noopener" data-goatcounter-click="ko-fi" data-goatcounter-title="Ko-fi button">Support me on Ko-fi</a></p>
   </div>
 </footer>
-<script>window.goatcounter = { path: '/quest-guides', title: 'Quest guides' };</script>
+<script>window.goatcounter = { path: '/dragonwilds-quests/', title: 'Quest guides' };</script>
 <script data-goatcounter="https://kgpguide.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
 }
 const regionChip = r => `<span class="rchip" style="--rc:${regionColor(r)}">${esc(r)}</span>`;
